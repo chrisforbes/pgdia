@@ -141,6 +141,7 @@ def gen_diagram():
         z = z + '\\l'
         return z
 
+
     print '\tgraph [overlap=false]'
     print '\tnode [shape=record fontname="Bitstream Vera Mono" fontsize=8]'
     print '\tedge [fontname="Bitstream Vera Mono" fontsize=8]'
@@ -148,13 +149,13 @@ def gen_diagram():
     for r,rv in relations.items():
 #        print '\t%s [shape=square, color=blue]' % r
 
-        attribs = ''.join(
-            [format_attrib_a(a,av) for a,av in rv.items() if a != '_fk'])
-        attribs2 = ''.join(
-            [format_attrib_b(a,av) for a,av in rv.items() if a != '_fk'])
-        attribs3 = ''.join(
-            [format_attrib_c(a,av) for a,av in rv.items() if a != '_fk'])
-        label = '{%s|{%s|%s|%s}}'% (r,attribs,attribs2,attribs3)
+        def make_col(f):
+            return ''.join([f(a,av) for a,av in rv.items() if a != '_fk'])
+
+        label = '{%s|{%s|%s|%s}}' %\
+            (r, make_col(format_attrib_a),
+                make_col(format_attrib_b),
+                make_col(format_attrib_c))
         print '\t%s [label="%s"]' % (r,label)
 
 #        for a,av in rv.items():
